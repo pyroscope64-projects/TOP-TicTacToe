@@ -1,0 +1,31 @@
+* {
+    margin:0;
+}
+body {
+    display:flex;
+    color:white;
+    justify-content: center;
+    align-items: center;
+    width:100vw;
+    height:100vh;
+    background-color: rgb(34, 34, 58);
+}
+.game {
+    display:flex;
+    width:69vw;
+    height:75vh;
+    justify-content: space-evenly;
+    row-gap: 1em;
+    flex-wrap: wrap;
+}
+.container {
+    display:block;
+    text-align: center;
+}
+.box {
+    border: 2px solid blueviolet;
+    border-radius: 30px;
+    background-color: rgb(163, 91, 231);
+    width:25%;
+    height:33%;
+}
