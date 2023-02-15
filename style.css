@@ -12,8 +12,8 @@ body {
 }
 .game {
     display:flex;
-    width:69vw;
-    height:75vh;
+    width:320px;
+    height:320px;
     justify-content: space-evenly;
     row-gap: 1em;
     flex-wrap: wrap;
@@ -23,9 +23,15 @@ body {
     text-align: center;
 }
 .box {
+    display:flex;
+    justify-content: center;
+    align-items: center;
     border: 2px solid blueviolet;
     border-radius: 30px;
     background-color: rgb(163, 91, 231);
-    width:25%;
-    height:33%;
+    width:100px;
+    height:100px;
+}
+.box > p {
+    font-size: 4em;
 }
