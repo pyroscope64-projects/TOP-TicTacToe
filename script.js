@@ -7,36 +7,69 @@ function Player(name, symbol) {
 }
 
 const board = (function () {
-    let board = [9];
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let container = document.querySelector(".container");
     function checkWin() {
-
-    }
-    function _onButtonClick() {
-        if (game.turn & 2 === 0) {
-            game.render(`Current Turn: ${game.playerOne.name}, ${game.playerOne.symbol}`);
-        } else {
-            game.render(`Current Turn: ${game.playerTwo.name}, ${game.playerTwo.symbol}`);
+        let gameOver = false;
+        for (let i = 0; i < 9; i += 3) {
+            if (board[i] != "" && board[i] === board[i + 1] &&
+                board[i + 1] === board[i + 2]) {
+                game.getWinner();
+                gameOver = true;
+            }
         }
-        game.changeTurn();
+        // columns
+        for (let i = 0; i < 3; i++) {
+            if (board[i] != "" && board[i] === board[i + 3] &&
+                board[i + 3] === board[i + 6]) {
+                game.getWinner();
+                gameOver = true;
+            }
+        }
+        // diagonals
+        if (board[0] != "" && board[0] === board[4] 
+            && board[4] === board[8]) {
+                game.getWinner();
+                gameOver = true;
+        } else if (board[2] != "" && board[2] === board[4]
+            && board[4] === board[6]) {
+                game.getWinner();
+                gameOver = true;
+        }
+        // end game
+        if (!board.includes("") && gameOver === false) {
+            game.render("TIE!!!");
+        }
+        if (gameOver || !board.includes("")) {
+            let gamediv = document.querySelector(".game");
+            gamediv.remove();
+            container.style.display = "flex";
+            container.style.width = "200px";
+            container.style.height = "75px";
+        }
     }
     function createBoard() {
         // removes the input div:
         let inputs = document.getElementById("inputs");
         inputs.remove();
         // makes the game div
-        let game = document.createElement("div");
-        game.className = "game"
+        let gamediv = document.createElement("div");
+        gamediv.className = "game"
         // adds the game div and the boxes inside to the container
-        let container = document.querySelector(".container");
-        container.appendChild(game);
+        container.appendChild(gamediv);
         for (let i = 0; i < 9; i++) {
-            let box = document.createElement("box");
+            let box = document.createElement("div");
             box.className = "box";
-            game.appendChild(box);
-            box.addEventListener('click', _onButtonClick);
+            gamediv.appendChild(box);
+            box.addEventListener('click', () => {
+                if (box.innerText === "") {
+                    game.onButtonClick(box, i)
+                }
+            });
         }
     }
     return {
+        board,
         createBoard,
         checkWin
     }
@@ -46,35 +79,62 @@ const game = (() => {
     const play = document.querySelector(".play");
     let turn = 0;
     let symbol = "X";
-    play.addEventListener('click', _createPlayers)
-    function _createPlayers() {
-        let p1name = document.getElementById("playerone");
-        let p2name = document.getElementById("playertwo");
-        this.playerOne = Player(p1name.value, "X");
-        this.playerTwo = Player(p2name.value, "O");
-        play.removeEventListener('click', _createPlayers);
+    let keepPlaying = true;
+    play.addEventListener('click', () => {
         board.createBoard();
-        render(`Current Turn: ${this.playerOne.name}, '${this.playerOne.symbol}' `);
+        play.removeEventListener('click', board.createBoard);
+        playerOne = Player(p1name.value, "X");
+        playerTwo = Player(p2name.value, "O");  
+        render(`Current Turn: ${playerOne.name}, '${playerOne.symbol}' `);
+        let container = document.querySelector(".container");
+        container.style.width = "320px";
+        container.style.height = "420px";
+    });
+    let p1name = document.getElementById("playerone");
+    let p2name = document.getElementById("playertwo");
+    let playerOne = Player(p1name.value, "X");
+    let playerTwo = Player(p2name.value, "O");
+    function onButtonClick(box, i) {
+        if (keepPlaying) {
+            if (turn % 2 === 0) {
+                render(`Current Turn: ${playerTwo.name}, ${playerTwo.symbol}`);
+            } else {
+                render(`Current Turn: ${playerOne.name}, ${playerOne.symbol}`);
+            }
+            box.innerText = symbol;
+            board.board[i] = symbol;
+            console.log(board.board);
+            changeTurn();
+            board.checkWin();
+        }
     }
-    
     function changeTurn() {
         turn++;
         if (turn % 2 === 0) {
-            this.symbol = "X";
+            symbol = "X";
         } else {
-            this.symbol = "O";
+            symbol = "O";
         }
     }
     function render(text) {
         let displayText = document.querySelector(".display");
         displayText.textContent = text;
     }
+    function getWinner() {
+        if (turn % 2 === 0) {
+            render(`Winner: ${playerTwo.name}, ${playerTwo.symbol}`);
+        } else {
+            render(`Winner: ${playerOne.name}, ${playerOne.symbol}`);
+        }
+    }
+
     return {
-        playerOne: this.playerOne,
-        playerTwo: this.playerTwo,
         turn,
         symbol,
+        keepPlaying,
         changeTurn,
-        render
+        render,
+        onButtonClick,
+        getWinner
     }
 })()
