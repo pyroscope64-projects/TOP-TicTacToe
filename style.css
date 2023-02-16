@@ -1,5 +1,6 @@
 * {
     margin:0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 body {
     display:flex;
@@ -17,10 +18,18 @@ body {
     justify-content: space-evenly;
     row-gap: 1em;
     flex-wrap: wrap;
+    transition:2s;
 }
 .container {
     display:block;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     text-align: center;
+    border-radius: 30px;
+    padding-top:30px;
+    background-color: blueviolet;
+    transition:2s;
 }
 .box {
     display:flex;
@@ -31,7 +40,50 @@ body {
     background-color: rgb(163, 91, 231);
     width:100px;
     height:100px;
-}
-.box > p {
     font-size: 4em;
+    transition:2s;
+}
+#playerone, #playertwo {
+    text-align: center;
+    align-items: center;
+    width:150px;
+    height:30px;
+    font-size:x-large;
+    border-radius: 16px;
+    transition:1s;
+}
+label {
+    font-size: x-large;
+}
+#playerone:focus, #playertwo:focus {
+    width:500px;
+    height:50px;
+}
+#playerone {
+    color:red;
+}
+#playertwo {
+    color:blue;
+}
+#inputs {
+    padding:20px;
+    margin:30px;
+    background-color: purple;
+    border:2px solid purple;
+    border-radius:30px;
+}
+.play {
+    margin-top:30px;
+    width:100px;
+    height:45px;
+    border:none;
+    color:white;
+    background-color: crimson;
+    font-size:larger;
+    border-radius: 15px;
+    transition:.5s;
+}
+.play:hover {
+    width:180px;
+    height:60px;
 }
